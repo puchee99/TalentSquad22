@@ -3,18 +3,19 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class MulticlassSimpleClassification(nn.Module):
-        def __init__(self, input_dim, output_dim, l1=512, l2=128, l3=64):
+        def __init__(self, input_dim, output_dim, l1=128, l2=64, l3=16): #l1=512, l2=128, l3=64):
             super(MulticlassSimpleClassification, self).__init__()
             self.name = 'MulticlassSimpleClassification'
             self.layer1 = nn.Linear(input_dim, l1)
             self.layer2 = nn.Linear(l1, l2)
-            self.layer3 = nn.Linear(l2, l3)
-            self.out = nn.Linear(l3, output_dim)
+            #self.layer3 = nn.Linear(l2, l3)
+            #self.out = nn.Linear(l3, output_dim)
+            self.out = nn.Linear(l2, output_dim)
             
         def forward(self, x):
             x = F.relu(self.layer1(x))
             x = torch.sigmoid(self.layer2(x))
-            x = torch.sigmoid(self.layer3(x))
+            #x = torch.sigmoid(self.layer3(x))
             x = F.softmax(self.out(x), dim=1)
             return x
 

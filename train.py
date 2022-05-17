@@ -71,7 +71,8 @@ def validate(model, X_test, y_test, criterion):
 
 def run_model(model,X_train,X_test,y_train, y_test):
     print_model_params(model)
-    optimizer = torch.optim.Adam(model.parameters(), lr = LR)
+    #optimizer = torch.optim.Adam(model.parameters(), lr = LR)
+    optimizer = torch.optim.Adamax(model.parameters(), lr = LR)
     criterion   = torch.nn.CrossEntropyLoss()
     train_loss     = np.zeros((EPOCHS,))
     train_acc = np.zeros((EPOCHS,))
