@@ -166,31 +166,47 @@ def save_plot_roc(X_test, y_test, model):
     return 
 
 def plot_features(df,y):
+    """
     select_columns = df[["Hour","Sensor_beta","Sensor_alpha_plus","Sensor_gamma"]]
     df_train = select_columns.copy()
     names = ['Lepidoptero', 'Himenoptera', 'Diptera'] #[0,1,2]
     feature_names = list(df_train.columns)
-    X = np.asarray(df_train)    
-
-    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(16, 6))
+    X = np.asarray(df_train) 
+    """   
+    len_features = df.shape[1]
+    X = np.asarray(df) 
+    names = df['target'].unique()
+    feature_names = df['target'].unique()
+    #fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(16, 6))
+    fig, axis = plt.subplots(2, (len_features//2)//2, figsize=(16, 6))
+    c=0
+    for j, line in enumerate(axis):
+        for k, ax in enumerate(line):
+            one_plot_features(X,names, ax, feature_names, y,c, c+1)
+            c+=2
+    """
     one_plot_features(X,names, ax1, feature_names, y,2,3)
     one_plot_features(X, names, ax2, feature_names, y,1,2)
     one_plot_features(X, names, ax3, feature_names,y, 1,3)
+    """
     plt.savefig(results_dir_plots+ 'features_distribution.png')
     return
 
 def one_plot_features(X, names, ax , feature_names, y,i, z):
-    for target, target_name in enumerate(names):
-            X_plot = X[y == target]
-            ax.plot(X_plot[:, i], X_plot[:, z], 
-                     linestyle='none', 
-                     marker='o', 
-                     label=target_name)
-    ax.set_xlabel(feature_names[i])
-    ax.set_ylabel(feature_names[z])
-    ax.axis('equal')
-    ax.legend()
-    #plt.plot()
+    try:
+        for target, target_name in enumerate(names):
+                X_plot = X[y == target]
+                ax.plot(X_plot[:, i], X_plot[:, z], 
+                        linestyle='none', 
+                        marker='o', 
+                        label=target_name)
+        ax.set_xlabel(feature_names[i])
+        ax.set_ylabel(feature_names[z])
+        ax.axis('equal')
+        ax.legend()
+    except:
+        #print(f'fail plot {i} {z}')
+        pass
     return
 
 

@@ -23,9 +23,9 @@ parser.add_argument('-lr', '--learningrate', type=float, default=0.0007,#1e-4,
     help='lerning rate number to train our network')
 parser.add_argument('-bl', '--batchlearning', type=str2bool, default=False,
     help='if true creates DataLoaders to use batch in training')
-parser.add_argument('-trf', '--trainfile', type=str, default='train.csv',
+parser.add_argument('-trf', '--trainfile', type=str, default='space_X_train.csv',
     help='Name of the training file')
-parser.add_argument('-l', '--label', type=str, default='Insect',
+parser.add_argument('-l', '--label', type=str, default='target',
     help='Name of the label column')
 parser.add_argument('-tf', '--tensorboard', type=str2bool, default=False,
     help='save logs to use in tensorboard')
@@ -47,9 +47,9 @@ if args['tensorboard']:
     from torch.utils.tensorboard import SummaryWriter
     writer = SummaryWriter('output/log_runs/insects_experiment_1')
 if args['makeplots']:
-    path, extension = get_path('train.csv')
+    path, extension = get_path('space_X_train.csv')
     df = get_dataframe(path, extension)
-    plot_features(df,df['Insect'])
+    plot_features(df,df['target'])
 
 def train(model, X, y, optimizer, criterion):
     model.train()
@@ -129,7 +129,7 @@ if __name__ == "__main__":
     df_train, y, col_names = create_datasets(TRAIN_FILE, LABEL_NAME)
     X_train, X_test, X_val, y_train, y_test, y_val = get_train_test_val(df_train,y)
     X_train_t, X_test_t, X_val_t, y_train_t, y_test_t, y_val_t = get_train_test_val_variable(X_train, X_test, X_val, y_train, y_test, y_val)
-    model     = MulticlassSimpleClassification(X_train.shape[1], 3).to(device)
+    model     = MulticlassSimpleClassification(X_train.shape[1], len(y.unique())).to(device)
     model.apply(init_weights)
     run_model(model, X_train_t, X_test_t, y_train_t, y_test_t)
     if args['run_test'] or args['test_without_label']:

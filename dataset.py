@@ -11,7 +11,7 @@ from torch.autograd import Variable
 
 
 #------------------------collect .csv file and load---------------------------------
-def get_path(filename: str = 'train.csv') -> tuple[str, str]:
+def get_path(filename: str = 'space_X_train.csv') -> tuple[str, str]:
     curr_path = str(os.getcwd())
     path_data = curr_path + '/data/' + filename
     file_extension = path_data.split(".")[-1]
@@ -27,7 +27,7 @@ def get_dataframe(path_data: str, file_extension: str) -> pd.DataFrame:
     return df 
 
 #------------------------get features to train, target_values, name_cols---------------------------------
-def clean_data(df:pd.DataFrame, label_col_name:str, select_corr_col:bool=True, resample_df:bool=True) -> tuple[pd.DataFrame, pd.DataFrame, list]:
+def clean_data(df:pd.DataFrame, label_col_name:str, select_corr_col:bool=True, resample_df:bool=False) -> tuple[pd.DataFrame, pd.DataFrame, list]:
     df_train = df.copy()
     if resample_df:
         df_0 = df_train[df_train[label_col_name] == 0]

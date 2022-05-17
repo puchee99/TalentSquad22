@@ -15,13 +15,13 @@ parser.add_argument('-z','--zt' ,type=str2bool, default=True,
     help='Test validation dataset')
 parser.add_argument('-r', '--results', type=str2bool, default=False,
     help='Predict and create results.csv (data without y_true_label)')
-parser.add_argument('-l', '--label', type=str, default='Insect',
+parser.add_argument('-l', '--label', type=str, default='target',
     help='Name of the label column')
 parser.add_argument('-i', '--indexcol', type=str, default="Unnamed: 0",
     help='Name of the index column')
-parser.add_argument('-trf', '--trainfile', type=str, default='train.csv',
+parser.add_argument('-trf', '--trainfile', type=str, default='space_X_train.csv',
     help='Name of the training file')
-parser.add_argument('-tsf', '--testfile', type=str, default='test_x.csv',
+parser.add_argument('-tsf', '--testfile', type=str, default='space_X_test.csv',
     help='Name of the file to make results.csv')
 parser.add_argument('-o', '--outfile', type=str, default='results.csv',
     help='Name of the file to save output predictions')
@@ -48,7 +48,7 @@ def load_best_model():
     device = ('cuda' if torch.cuda.is_available() else 'cpu')
     logger.info(f"Computation device: {device}")
     model = MulticlassSimpleClassification(
-        X_train.shape[1], 3
+        X_train.shape[1], 5
     ).to(device)
     best_model_cp = torch.load(f"output/models/best_"+"MulticlassSimpleClassification"+".pth")
     model.load_state_dict(best_model_cp['model_state_dict'])
